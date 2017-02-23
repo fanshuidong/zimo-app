@@ -12,7 +12,8 @@ public enum QydjCode implements ICode {
 	
 	CAPTCHA_GET_CD(201, "captcha get frequently"),
 	CAPTCHA_COUNT_LIMIT(202, "captcha count limit"),
-	CAPTCHA_ERROR(203, "captcha error");
+	CAPTCHA_ERROR(203, "captcha error"),
+	MOBILE_ALREADY_REGISTER(204, "mobile is already register");
 	
 	private int code;
 	private String defaultVaule;

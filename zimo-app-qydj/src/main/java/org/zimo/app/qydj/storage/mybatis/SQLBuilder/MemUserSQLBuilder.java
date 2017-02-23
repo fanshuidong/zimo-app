@@ -11,7 +11,7 @@ public class MemUserSQLBuilder {
 				INSERT_INTO(Table.MEM_USER.mark());
 				VALUES("mobile", "#{mobile}");
 				VALUES("sex", "#{sex}");
-				VALUES("nickName", "#{nick_name}");
+				VALUES("nick_name", "#{nickName}");
 				VALUES("password", "#{password}");
 				VALUES("birthday", "#{birthday}");
 				VALUES("created",  "#{created}");

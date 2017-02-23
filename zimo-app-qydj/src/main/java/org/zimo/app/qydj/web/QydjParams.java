@@ -21,10 +21,11 @@ public interface QydjParams {
 		protected String parseValue(String value) {
 			PhoneNumberUtil util = PhoneNumberUtil.getInstance();
 			try {
-				PhoneNumber number = util.parse(value, null);
+				PhoneNumber number = util.parse("+86"+value, null);
 				if (!util.isValidNumber(number))
 					throw IllegalConstException.errorException(this);
-				return "+" + number.getCountryCode() + number.getNationalNumber();
+				//return "+" + number.getCountryCode() + number.getNationalNumber();
+				return number.getNationalNumber()+"";
 			} catch (NumberParseException e) {
 				throw IllegalConstException.errorException(this);
 			}
@@ -89,5 +90,8 @@ public interface QydjParams {
 	final IrisStrConst OPENID								= new IrisStrConst("openId", 152);
 	final IrisLongConst COUNT							    = new IrisLongConst("count",0, 153);
 	final IrisStrConst KEY							        = new IrisStrConst("key", 154);
-	final IrisStrConst PASSWORD							    = new IrisStrConst("password", 154);
+	final IrisStrConst PASSWORD							    = new IrisStrConst("password", 155);
+	final IrisIntConst SEX							   	    = new IrisIntConst("sex", 156);
+	final IrisStrConst NICKNAME							    = new IrisStrConst("nickName", 157);
+	final IrisStrConst BIRTHDAY							    = new IrisStrConst("birthday", 158);
 }

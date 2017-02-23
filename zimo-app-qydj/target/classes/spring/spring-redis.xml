@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg index="0">
+			<bean class="redis.clients.jedis.JedisPoolConfig">
+				<property name="lifo" value="false" />
+				<property name="maxIdle" value="12" />
+				<property name="minIdle" value="4" />
+				<property name="maxTotal" value="12" />
+				<property name="testOnBorrow" value="true" />
+				<property name="testWhileIdle" value="false" />
+				<property name="maxWaitMillis" value="3000" />
+				<property name="blockWhenExhausted" value="true" />
+				<property name="numTestsPerEvictionRun" value="-1" />
+				<property name="minEvictableIdleTimeMillis" value="-1" />
+				<property name="timeBetweenEvictionRunsMillis" value="30000" />
+				<property name="softMinEvictableIdleTimeMillis" value="60000" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg index="1" value="192.168.0.231" />
+		<constructor-arg index="2" value="6379" type="int" />
+		<constructor-arg index="3" value="2000" type="int" />
+		<constructor-arg index="4"><null/></constructor-arg>
+	</bean>
+
+	<bean id="redisOperate" class="org.zimo.redis.operate.RedisOperate">
+		<property name="pool" ref="jedisPool" />
+	</bean>
+ 
+	<bean id="luaCache" class="org.zimo.redis.operate.lua.LuaCache">
+		<constructor-arg index="0" value="classpath:lua" />
+	</bean>
+	
+	<bean id="luaOperate" class="org.zimo.app.qydj.storage.redis.QydjLuaOperate">
+		<property name="luaCache" ref="luaCache" />
+		<property name="redisOperate" ref="redisOperate" />
+	</bean>
+
+	<bean id="distributeLock" class="org.zimo.redis.operate.lock.DistributeLock">
+		<property name="redisOperate" ref="redisOperate" />
+		<property name="luaOperate" ref="luaOperate" />
+		<property name="lockTimeout" value="3000" />
+	</bean>
+</beans>

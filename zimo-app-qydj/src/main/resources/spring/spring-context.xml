@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    			 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    			 
+    <bean class="org.zimo.app.qydj.common.AppConfig">
+		<property name="env" value="${env}" />
+		<property name="captchaDigit" value="${captcha.digit}" />
+		<property name="captchaLifeTime" value="${captcha.life.time}" />
+		<property name="captchaCountMaximum" value="${captcha.count.maximum}" />
+		<property name="captchaCountLifeTime" value="${captcha.count.lift.time}" />
+		<property name="redisLockTimeout" value="${redis.lock.timeout}" />
+	
+	</bean>
+	
+	<context:component-scan base-package="org.zimo.app.qydj" />
+        
+	<bean id="lang" class="org.zimo.app.qydj.service.QydjLang">
+		<constructor-arg index="0" value="classpath:locale/locale_${locale}.properties" />
+	</bean>
+	
+	 <!-- httpclient 配置 -->
+    <bean id="httpProxy" class="org.zimo.util.network.http.HttpProxy" init-method="init">
+		<property name="syncHttp" ref="syncHttp"/>
+	</bean>
+	<bean id="syncHttp" class="org.zimo.util.network.http.SyncHttpAdapter">
+		<property name="sslEnabled" value="true" />
+		<property name="retryCount" value="3" />							<!-- 失败重连次数 -->
+		<property name="maxConn" value="200" />								<!-- 最大连接数 -->
+		<property name="maxConnPerRoute" value="200" />						<!-- 每个路由能打开的最大连接数 -->
+		<property name="keepAliveTime" value="30000" />						<!-- 空闲连接回收超时时间 30s -->
+	</bean>
+	
+	<bean id="qydj" class="org.zimo.app.qydj.service.Qydj" init-method="start" destroy-method="stop">
+		<constructor-arg index="0" value="${app.name}" />
+		<property name="locale" ref="lang" />
+	</bean>
+	
+	
+	<bean class="org.zimo.core.util.SpringContextUtil" />
+	
+	<import resource="spring-mybatis.xml" />
+	<import resource="spring-redis.xml"/>
+</beans>

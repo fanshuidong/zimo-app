@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+						
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/qydj?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;failOverReadOnly=false" />
+		<property name="username" value="root" />
+		<property name="password" value="fan516820" />
+		<property name="idleConnectionTestPeriodInMinutes" value="60" />
+		<property name="idleMaxAgeInMinutes" value="240" />
+		<property name="maxConnectionsPerPartition" value="10" />
+		<property name="minConnectionsPerPartition" value="5" />
+		<property name="partitionCount" value="5" />
+		<property name="acquireIncrement" value="5" />
+		<property name="statementsCacheSize" value="100" />
+	</bean>
+	<!--	
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close">
+		<constructor-arg>
+			<bean class="com.zaxxer.hikari.HikariConfig">
+				<property name="driverClassName" value="${hikaricp.driver.class}" />
+				<property name="jdbcUrl" value="${hikaricp.jdbc}" />
+				<property name="username" value="${hikaricp.username}" />
+				<property name="password" value="${hikaricp.password}" />
+				<property name="maximumPoolSize" value="${hikaricp.max.pool.size}" />
+				<property name="minimumIdle" value="${hikaricp.min.idle}"/>
+				<property name="maxLifetime" value="${hikaricp.max.life.time}" />
+				<property name="idleTimeout" value="${hikaricp.idle.timeout}" />
+				<property name="connectionTimeout" value="${hikaricp.connection.timeout}" />
+				<property name="dataSourceProperties">
+					<props>
+						<prop key="cachePrepStmts">${hikaricp.datasource.prestmt.cache}</prop>
+						<prop key="prepStmtCacheSize">${hikaricp.datasource.prestmt.cache.size}</prop>
+						<prop key="prepStmtCacheSqlLimit">${hikaricp.datasource.prestmt.cache.sql.limit}
+						</prop>
+					</props>
+				</property>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configuration">
+			<bean class="org.apache.ibatis.session.Configuration">
+				<property name="mapUnderscoreToCamelCase" value="true" />
+			</bean>
+		</property>
+	</bean>
+-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="org.zimo.app.qydj.storage.mybatis.mapper" />
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>

@@ -1,0 +1,62 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+	<display-name>qydj</display-name>
+	<context-param>
+		<param-name>logbackConfigLocation</param-name>
+		<param-value>classpath:logback.xml</param-value>
+	</context-param>	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring/spring-context.xml</param-value>
+	</context-param>
+	
+	<listener>
+		<listener-class>org.zimo.app.qydj.web.listener.IrisContextLoaderListener</listener-class>
+	</listener>
+	
+	<filter>  
+        <filter-name>encodingFilter</filter-name>  
+        <filter-class>org.zimo.app.qydj.web.filter.CharsetEncodingFilter</filter-class>  
+        <init-param>  
+            <param-name>encoding</param-name>  
+            <param-value>utf-8</param-value>  
+        </init-param>  
+    </filter>  
+    <filter-mapping>  
+        <filter-name>encodingFilter</filter-name>  
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping>  
+	
+	<servlet>
+		<servlet-name>user</servlet-name>
+		<servlet-class>org.zimo.app.qydj.web.servlet.UserServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>user</servlet-name>
+		<url-pattern>/user</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>common</servlet-name>
+		<servlet-class>org.zimo.app.qydj.web.servlet.CommonServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>common</servlet-name>
+		<url-pattern>/common</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>backstage</servlet-name>
+		<servlet-class>org.zimo.app.qydj.web.servlet.BackstageServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>backstage</servlet-name>
+		<url-pattern>/backstage</url-pattern>
+	</servlet-mapping>
+</web-app>

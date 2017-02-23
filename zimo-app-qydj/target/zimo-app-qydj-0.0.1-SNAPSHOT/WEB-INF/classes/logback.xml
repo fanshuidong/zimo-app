@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="5 seconds" debug="false">
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>[%-5level] %d{HH:mm:ss.SSS} [%thread] %logger - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="root"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>E:/data/logs/Iris/jilu/root.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${log.path}/%d{yyyy-MM-dd}/root-%d{yyyy-MM-dd}-%i.log.gz
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="Iris"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>E:/data/logs/Iris/jilu/Iris.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${log.path}/%d{yyyy-MM-dd}/biz-%d{yyyy-MM-dd}-%i.log.gz
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	
+	<logger name="org.Iris" additivity="true">
+		<level value="debug" />
+		<appender-ref ref="Iris"/>
+	</logger>
+
+	<root level="info">
+		<if condition='"true".equals("true")'>
+			<then>
+				<appender-ref ref="console"/>
+				<appender-ref ref="root" />
+			</then>
+			<else>
+				<appender-ref ref="root" />
+			</else>
+		</if>
+	</root>
+</configuration>
